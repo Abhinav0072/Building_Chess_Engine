@@ -13,7 +13,7 @@ function legal_moves=swear_rulebook_moveS(current_status,Color)
 [m,~]=size(current_status);
 for i=1:m,
     
-    %% Writing rule for Rook and taking out the possible moves for Rook
+    % Writing rule for Rook and taking out the possible moves for Rook
     if strcmp(current_status(i).status,'Alive')&&(and(strcmp(current_status(i).color,Color),strcmp(current_status(i).piece,'Rook')))
       upper_highest=8;
       upper_color='None';
@@ -61,13 +61,12 @@ for i=1:m,
           end
       end
       try
-          legal_moves=[legal_moves;create_legal_move_rook(Color,current_status(i),upper_highest,upper_color,upper_piece,lower_lowest,lower_color,lower_piece,left_lowest,left_color,left_piece,right_highest,right_color,right_piece)];
+          legal_moves_rook=[legal_moves_rook;create_legal_move_rook(Color,current_status(i),upper_highest,upper_color,upper_piece,lower_lowest,lower_color,lower_piece,left_lowest,left_color,left_piece,right_highest,right_color,right_piece)];
       catch
-          legal_moves=create_legal_move_rook(Color,current_status(i),upper_highest,upper_color,upper_piece,lower_lowest,lower_color,lower_piece,left_lowest,left_color,left_piece,right_highest,right_color,right_piece);
-      end
+          legal_moves_rook=
     end
     
-    %% Taking out all possible moves for Bishop according to rule
+    
     
 end
 end
