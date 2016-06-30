@@ -1,0 +1,3 @@
+function current_status=update_status(previous_state,khana_initial,khana_update)
+
+end
