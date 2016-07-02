@@ -1,4 +1,4 @@
-function legal_moves=create_legal_move_bishop(for_which_color,current_state,first_closest_file,first_closest_rank,first_color,first_piece,second_closest_file,second_closest_rank,second_color,second_piece,third_closest_file,third_closest_row,third_color,third_piece,fourth_closest_file,fourth_closest_rank,fourth_color,fourth_piece)
+function legal_moves=create_legal_move_bishop(for_which_color,current_state,first_closest_file,first_closest_rank,first_color,first_piece,second_closest_file,second_closest_rank,second_color,second_piece,third_closest_file,third_closest_rank,third_color,third_piece,fourth_closest_file,fourth_closest_rank,fourth_color,fourth_piece)
 
 %% creating legal moves data struct for the legal moves in  first diagonal (with slope1)
 % generating legal moves from the space between the two ends

@@ -143,7 +143,7 @@ for i=1:m,
                    if current_status(j).file>=second_closest_file
                        second_closest_file=current_status(j).file;
                        second_closest_rank=current_status(j).rank;
-                       second_cloor=current_status(j).color;
+                       second_color=current_status(j).color;
                        second_piece=current_status(j).piece;
                    end
                    
@@ -173,7 +173,117 @@ for i=1:m,
         end
     end
     
-    %%
-   
+    %% Generating all possible legal moves for Knight according to rule
+    if strcmp(current_status(i).status,'Alive')&&(and(strcmp(current_status(i).color,Color),strcmp(current_status(i).piece,'Knight')))
+        % initializing the default value in possible position of movement
+        % of Knight(1.by keeping file constant(with four possibilities)
+        % 2.keeping rank constant(with four furthur possibilities))
+        
+        % first going dhai along file.
+        % first going down the file
+        file_down_right_color='None';                   % ASSUMING THEY ARE NOT AVAILABLE (NOT VALID OR OUT OF BOUND) FIRST, THEN IF THEY ARE,UPDATING ACCORDINGLY.
+        file_down_left_color='None';                    % ASSUMING THEY ARE NOT AVAILABLE (NOT VALID OR OUT OF BOUND) FIRST, THEN IF THEY ARE,UPDATING ACCORDINGLY.
+        file_up_right_color='None';                     % ASSUMING THEY ARE NOT AVAILABLE (NOT VALID OR OUT OF BOUND) FIRST, THEN IF THEY ARE,UPDATING ACCORDINGLY.
+        file_up_left_color='None';                      % ASSUMING THEY ARE NOT AVAILABLE (NOT VALID OR OUT OF BOUND) FIRST, THEN IF THEY ARE,UPDATING ACCORDINGLY.
+        if current_status.rank>2
+            if current_status.file<8
+                file_down_right_color='None';
+                file_down_right_piece='None';
+            end
+            if current_status.file>1
+                file_down_left_color='None';
+                file_down_left_piece='None';
+            end
+        end
+        % now going up the file
+        if current_status.rank<7
+            if current_status.file<8
+                file_up_right_color='None';
+                file_up_right_piece='None';
+            end
+            if current_status.file>1
+                file_up_left_color='None';
+                file_up_left_piece='None';
+            end
+        end
+        
+        % now going dhai along the rank
+        % first going left
+        rank_left_down_color='NA';                      % ASSUMING THEY ARE NOT AVAILABLE (NOT VALID OR OUT OF BOUND) FIRST, THEN IF THEY ARE,UPDATING ACCORDINGLY.
+        rank_left_up_color='NA';                        % ASSUMING THEY ARE NOT AVAILABLE FIRST, THEN IF THEY ARE,UPDATING ACCORDINGLY.
+        rank_right_down_color='NA';                     % ASSUMING THEY ARE NOT AVAILABLE FIRST, THEN IF THEY ARE,UPDATING ACCORDINGLY.
+        rank_right_up_color='NA';                       % ASSUMING THEY ARE NOT AVAILABLE FIRST, THEN IF THEY ARE,UPDATING ACCORDINGLY.
+        if current_status.file>2        
+            if current_status.rank>1
+                rank_left_down_color='None';
+                rank_left_down_piece='None';
+            end
+            if current_status.rank<8
+                rank_left_up_color='None';
+                rank_left_up_piece='None';
+            end
+        end
+        % now going right along the same rank and then dhai
+        if current_status.file<7
+            if currrent_status.rank>1
+                rank_right_down_color='None';
+                rank_right_down_piece='None';
+            end
+            if current_status.rank<8
+                rank_right_up_color='None';
+                rank_right_up_piece='None';
+            end
+        end
+        
+        % now searching from amongst the other pieces that if they are
+        % empty or what pieces are there
+        for j=1:m,
+            if j~=i
+                %checking along the files now.
+                % first up
+                if and((current_status(j).rank==current_status(i).rank+2),current_status(j).file==current_status(i).file+1)
+                    file_up_right_color=current_status(j).color;
+                    file_up_right_piece=current_status(j).piece;
+                    
+                elseif and(current_status(j).rank==current_status(i).rank+2,current_status(j).file==current_status(i).file-1)
+                    file_up_left_color=current_status(j).color;
+                    file_up_left_piece=current_status(j).piece;
+                % now going down
+                elseif and(current_status(j).rank==current_status(i).rank-2,current_status(j).file==current_status(i).file+1)
+                    file_down_right_color=current_status(j).color;
+                    file_down_right_piece=current_status(j).piece;
+                    
+                elseif and(current_status(j).rank==current_status(i).rank-2,current_status(j).file==current_status(i).file-1)
+                    file_down_left_color=current_status(j).color;
+                    file_down_left_piece=current_status(j).piece;
+                    
+                % now moving along the file
+                % going left first
+                elseif and(current_status(j).file==current_status(i).file-2,current_status(j).rank==current_status(i).rank-1)
+                    rank_left_down_color=current_status(j).color;
+                    rank_left_down_piece=current_status(j).piece;
+                    
+                elseif and(current_status(j).file==current_status(i).file-2,current_status(j).rank==current_status(i).rank+1)
+                    rank_left_up_color=current_status(j).color;
+                    rank_left_up_piece=current_status(j).piece;
+                    
+                % now going right
+                elseif and(current_status(j).file==current_status(i).file+2,current_status(j).rank==current_status(i).rank-1)
+                    rank_right_down_color=current_status(j).color;
+                    rank_right_down_piece=current_status(j).piece;
+                    
+                elseif and(current_status(j).file==current_status(i).file+2,current_status(j).rank==current_status(i).rank+1)
+                    rank_right_up_color=current_status(j).color;
+                    rank_right_up_piece=current_status(j).piece;
+                end
+            end
+        end
+        try
+            legal_moves=[legal_moves;create_legal_move_knight(file_up_right_color,file_up_right_piece,file_up_left_color,file_up_left_piece,file_down_right_color,file_down_right_piece,file_down_left_color,file_down_left_piece,rank_left_up_color,rank_left_up_piece,rank_left_down_color,rank_left_down_piece,rank_right_up_color,rank_right_up_piece,rank_right_down_color,rank_right_down_piece)];
+        catch
+            legal_moves=create_legal_move_knight(Color,current_status(i),file_up_right_color,file_up_right_piece,file_up_left_color,file_up_left_piece,file_down_right_color,file_down_right_piece,file_down_left_color,file_down_left_piece,rank_left_up_color,rank_left_up_piece,rank_left_down_color,rank_left_down_piece,rank_right_up_color,rank_right_up_piece,rank_right_down_color,rank_right_down_piece);
+        end
+    end
+  
 end
 end
