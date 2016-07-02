@@ -8,3 +8,5 @@
 
 % AI engine will also give input in format like the player do
 % files=['a';'b';'c';'d';'e';'f';'g';'h'];
+
+% keep track of castling by tracking if king or bishop has moved
