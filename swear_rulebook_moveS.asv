@@ -380,8 +380,10 @@ for i=1:m,
             end
         end
         try
-            legal_moves=[legal_moves;create_legal_move_king()];
-            ca
+            legal_moves=[legal_moves;create_legal_move_king(for_which_color,current_state,file_up_right_color,file_up_right_piece,file_up_left_color,file_up_left_piece,file_down_right_color,file_down_right_piece,file_down_left_color,file_down_left_piece,rank_left_up_color,rank_left_up_piece,rank_left_down_color,rank_left_down_piece,rank_right_up_color,rank_right_up_piece,rank_right_down_color,rank_right_down_piece)];
+        catch
+            legal_moves=create_legal_move_king(for_which_color,current_state,file_up_right_color,file_up_right_piece,file_up_left_color,file_up_left_piece,file_down_right_color,file_down_right_piece,file_down_left_color,file_down_left_piece,rank_left_up_color,rank_left_up_piece,rank_left_down_color,rank_left_down_piece,rank_right_up_color,rank_right_up_piece,rank_right_down_color,rank_right_down_piece);
+        end
     end
 end
 end
