@@ -10,3 +10,4 @@
 % files=['a';'b';'c';'d';'e';'f';'g';'h'];
 
 % keep track of castling by tracking if king or bishop has moved
+%keep track of promotion of new piece by pawn moving to the end.

@@ -386,6 +386,8 @@ for i=1:m,
         end
     end
     
-    %%
+    %% Generating all possible moves for the pawn
+    
+    
 end
 end

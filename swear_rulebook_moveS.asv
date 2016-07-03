@@ -279,7 +279,7 @@ for i=1:m,
             end
         end
         try
-            legal_moves=[legal_moves;create_legal_move_knight(file_up_right_color,file_up_right_piece,file_up_left_color,file_up_left_piece,file_down_right_color,file_down_right_piece,file_down_left_color,file_down_left_piece,rank_left_up_color,rank_left_up_piece,rank_left_down_color,rank_left_down_piece,rank_right_up_color,rank_right_up_piece,rank_right_down_color,rank_right_down_piece)];
+            legal_moves=[legal_moves;create_legal_move_knight(Color,current_status(i),file_up_right_color,file_up_right_piece,file_up_left_color,file_up_left_piece,file_down_right_color,file_down_right_piece,file_down_left_color,file_down_left_piece,rank_left_up_color,rank_left_up_piece,rank_left_down_color,rank_left_down_piece,rank_right_up_color,rank_right_up_piece,rank_right_down_color,rank_right_down_piece)];
         catch
             legal_moves=create_legal_move_knight(Color,current_status(i),file_up_right_color,file_up_right_piece,file_up_left_color,file_up_left_piece,file_down_right_color,file_down_right_piece,file_down_left_color,file_down_left_piece,rank_left_up_color,rank_left_up_piece,rank_left_down_color,rank_left_down_piece,rank_right_up_color,rank_right_up_piece,rank_right_down_color,rank_right_down_piece);
         end
@@ -380,10 +380,14 @@ for i=1:m,
             end
         end
         try
-            legal_moves=[legal_moves;create_legal_move_king(for_which_color,current_state,file_up_right_color,file_up_right_piece,file_up_left_color,file_up_left_piece,file_down_right_color,file_down_right_piece,file_down_left_color,file_down_left_piece,rank_left_up_color,rank_left_up_piece,rank_left_down_color,rank_left_down_piece,rank_right_up_color,rank_right_up_piece,rank_right_down_color,rank_right_down_piece)];
+            legal_moves=[legal_moves;create_legal_move_king(Color,current_status.(i),up_color,up_piece,down_color,down_piece,left_color,left_piece,right_color,right_piece,dig_1_color,dig_1_piece,dig_2_color,dig_2_piece,dig_3_color,dig_3_piece,dig_4_color,dig_4_piece)];
         catch
-            legal_moves=create_legal_move_king(for_which_color,current_state,file_up_right_color,file_up_right_piece,file_up_left_color,file_up_left_piece,file_down_right_color,file_down_right_piece,file_down_left_color,file_down_left_piece,rank_left_up_color,rank_left_up_piece,rank_left_down_color,rank_left_down_piece,rank_right_up_color,rank_right_up_piece,rank_right_down_color,rank_right_down_piece);
+            legal_moves=create_legal_move_king(Color,current_status.(i),up_color,up_piece,down_color,down_piece,left_color,left_piece,right_color,right_piece,dig_1_color,dig_1_piece,dig_2_color,dig_2_piece,dig_3_color,dig_3_piece,dig_4_color,dig_4_piece);
         end
     end
+    
+    %% Generating all possible moves for the pawn
+    
+    
 end
 end
