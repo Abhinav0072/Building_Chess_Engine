@@ -1,4 +1,4 @@
-function legal_moves=swear_rulebook_moveS(current_status,Color,is_castling_legal)
+function legal_moves=swear_rulebook_moveS(current_status,previous_state,Color,is_castling_legal)
 %%  %This function contain the rules of the legality of the moves.
     %This will give  a list of all
     %possible moves by all possible pieces alives of one or both, according
@@ -30,7 +30,7 @@ for i=1:m,
       right_color='None';                           %assuming that no piece is there in the last possible khana
       right_piece='None';                           %assuming that no piece is there in the last possible khana
       for j=1:m,
-          if and((j~=i),strcmp(current_status(i).status,'Alive'))
+          if and((j~=i),strcmp(current_status(j).status,'Alive'))
               if (current_status(j).file==current_status(i).file)
                   if (current_status(j).rank>current_status(i).rank)
                       if (current_status(j).rank<=upper_highest)
@@ -65,7 +65,10 @@ for i=1:m,
       try
           legal_moves=[legal_moves;create_legal_move_rook(Color,current_status(i),upper_highest,upper_color,upper_piece,lower_lowest,lower_color,lower_piece,left_lowest,left_color,left_piece,right_highest,right_color,right_piece)];
       catch
-          legal_moves=create_legal_move_rook(Color,current_status(i),upper_highest,upper_color,upper_piece,lower_lowest,lower_color,lower_piece,left_lowest,left_color,left_piece,right_highest,right_color,right_piece);
+          try
+            legal_moves=create_legal_move_rook(Color,current_status(i),upper_highest,upper_color,upper_piece,lower_lowest,lower_color,lower_piece,left_lowest,left_color,left_piece,right_highest,right_color,right_piece);
+          catch
+          end
       end
     end
     
@@ -125,7 +128,7 @@ for i=1:m,
         end
         
         for j=1:m,
-            if and((j~=i),strcmp(current_status(i).status,'Alive'))
+            if and((j~=i),strcmp(current_status(j).status,'Alive'))
                file_diff=current_status(j).file-current_status(i).file;
                rank_diff=current_status(j).rank-current_status(i).rank;
                % checking if the (examining) piece is in the first quadrant
@@ -185,23 +188,24 @@ for i=1:m,
         file_down_left_color='NA';                    % ASSUMING THEY ARE NOT AVAILABLE (NOT VALID OR OUT OF BOUND) FIRST, THEN IF THEY ARE,UPDATING ACCORDINGLY.
         file_up_right_color='NA';                     % ASSUMING THEY ARE NOT AVAILABLE (NOT VALID OR OUT OF BOUND) FIRST, THEN IF THEY ARE,UPDATING ACCORDINGLY.
         file_up_left_color='NA';                      % ASSUMING THEY ARE NOT AVAILABLE (NOT VALID OR OUT OF BOUND) FIRST, THEN IF THEY ARE,UPDATING ACCORDINGLY.
-        if current_status.rank>2
-            if current_status.file<8
+        file_down_right_piece='NA';   %add them too
+        if current_status(i).rank>2
+            if current_status(i).file<8
                 file_down_right_color='None';
                 file_down_right_piece='None';
             end
-            if current_status.file>1
+            if current_status(i).file>1
                 file_down_left_color='None';
                 file_down_left_piece='None';
             end
         end
         % now going up the file
-        if current_status.rank<7
-            if current_status.file<8
+        if current_status(i).rank<7
+            if current_status(i).file<8
                 file_up_right_color='None';
                 file_up_right_piece='None';
             end
-            if current_status.file>1
+            if current_status(i).file>1
                 file_up_left_color='None';
                 file_up_left_piece='None';
             end
@@ -213,23 +217,23 @@ for i=1:m,
         rank_left_up_color='NA';                        % ASSUMING THEY ARE NOT AVAILABLE FIRST, THEN IF THEY ARE,UPDATING ACCORDINGLY.
         rank_right_down_color='NA';                     % ASSUMING THEY ARE NOT AVAILABLE FIRST, THEN IF THEY ARE,UPDATING ACCORDINGLY.
         rank_right_up_color='NA';                       % ASSUMING THEY ARE NOT AVAILABLE FIRST, THEN IF THEY ARE,UPDATING ACCORDINGLY.
-        if current_status.file>2        
-            if current_status.rank>1
+        if current_status(i).file>2        
+            if current_status(i).rank>1
                 rank_left_down_color='None';
                 rank_left_down_piece='None';
             end
-            if current_status.rank<8
+            if current_status(i).rank<8
                 rank_left_up_color='None';
                 rank_left_up_piece='None';
             end
         end
         % now going right along the same rank and then dhai
-        if current_status.file<7
-            if currrent_status.rank>1
+        if current_status(i).file<7
+            if current_status(i).rank>1
                 rank_right_down_color='None';
                 rank_right_down_piece='None';
             end
-            if current_status.rank<8
+            if current_status(i).rank<8
                 rank_right_up_color='None';
                 rank_right_up_piece='None';
             end
@@ -238,7 +242,7 @@ for i=1:m,
         % now searching from amongst the other pieces that if they are
         % empty or what pieces are there
         for j=1:m,
-            if and((j~=i),strcmp(current_status(i).status,'Alive'))
+            if and((j~=i),strcmp(current_status(j).status,'Alive'))
                 %checking along the files now.
                 % first up
                 if and((current_status(j).rank==current_status(i).rank+2),current_status(j).file==current_status(i).file+1)
@@ -335,7 +339,7 @@ for i=1:m,
         
         % Now searching from the rest of the alive pieces
         for j=1:m,
-            if and((j~=i),strcmp(current_status(i).status,'Alive'))
+            if and((j~=i),strcmp(current_status(j).status,'Alive'))
                 
                 %checking top first
                 if current_status(j).file==current_status(i).file && current_status(j).rank==current_status(i).rank+1
@@ -388,6 +392,108 @@ for i=1:m,
     
     %% Generating all possible moves for the pawn
     
+    % initializing the foreward position of the pawn assuming its empty
+    foreward_one_color='None';
+    foreward_one_piece='None';
+    foreward_two_color='NA';
+    foreward_two_piece='NA';
     
+    
+    if strcmp(current_status(i).displacement,'No')
+        foreward_two_color='None';
+        foreward_two_piece='None';
+    end
+    
+    % initializing the attack move of digonal assuming that the move is not
+    % possible (and then updating accordingly if it is possible)
+    attack_left_color='NA';
+    attack_left_piece='NA';
+    attack_right_piece='NA';
+    attack_right_color='NA';
+    
+    % Now updating the attack default move according to its pos assuming
+    % that it is empty to move (then furthur check will happen)
+    if current_status(i).file>1 || current_status(i).file<8
+        attack_left_color='None';
+        attack_left_piece='None';
+        attack_right_piece='None';
+        attack_right_color='None';
+        
+    elseif current_status(i).file==1
+        attack_right_color='None';
+        attack_right_piece='None';
+        
+    elseif current_status(i).file==8
+        attack_left_color='None';
+        attack_left_piece='None';
+    end
+    
+    %now checking through the alive pieces
+   for j=1:m,
+            % implementing it for "white pawn".
+            if and(and((j~=i),strcmp(current_status(j).status,'Alive')),strcmp(current_status(i).color,'White'))
+                %for the one move foreward
+                if current_status(j).file==current_status(i).file && current_status(j).rank==curretn_status(i).rank+1
+                    foreward_one_color=current_status(j).color;
+                    foreward_one_piece=current_status(j).piece;
+                    
+                %for two move foreward on the first move of that piece
+                elseif (current_status(j).file==current_status(i).file && current_status(j).rank==current_status(i).rank+2 )&& (strcmp(current_status.displacement,'No'))
+                    foreward_two_color=current_status(j).color;
+                    foreward_two_piece=current_status(j).piece;
+                    
+                %for the right attack
+                elseif current_status(j).file==current_status(i).file+1 && current_status(j).rank==current_status(i).rank+1
+                    attack_right_color=current_status(j).color;
+                    attack_right_piece=current_status(j).piece;
+                    
+                %for left attack
+                elseif current_status(j).file==current_status(i).file-1 && current_status(j).rank==current_status(i).rank+1
+                    attack_left_color=current_status(j).color;
+                    attack_left_piece=current_status(j).piece;
+                    
+                % for "en-passent" capture
+                elseif strcmp(current_status(j).piece,'pawn') && strcmp(current_status(j).color,'Black') && current_status(j).rank==5 && strcmp(previous_status(j).displacement,'No') && current_status(i).rank==5 && (current_status(j).file==current_status(i).file+1 || current_status(j).file==current_status(i).file==-1)
+                    try
+                        legal_moves=[legal_moves;create_legal_move_struct(current_status(j),current_status(j).file,6,'pawn')];
+                    catch
+                        legal_moves=create_legal_move_struct(current_status(j),current_status(j).file,6,'pawn');
+                    end
+                end
+            end
+            
+            
+            % implementing it for "black pawn".
+             if and(and((j~=i),strcmp(current_status(j).status,'Alive')),strcmp(current_status(i).color,'Black'))
+                %for the one move foreward
+                if current_status(j).file==current_status(i).file && current_status(j).rank==curretn_status(i).rank-1
+                    foreward_one_color=current_status(j).color;
+                    foreward_one_piece=current_status(j).piece;
+                    
+                %for two move foreward on the first move of that piece
+                elseif (current_status(j).file==current_status(i).file && current_status(j).rank==current_status(i).rank-2 )&& (strcmp(current_status.displacement,'No'))
+                    foreward_two_color=current_status(j).color;
+                    foreward_two_piece=current_status(j).piece;
+                    
+                %for the right attack
+                elseif current_status(j).file==current_status(i).file+1 && current_status(j).rank==current_status(i).rank-1
+                    attack_right_color=current_status(j).color;
+                    attack_right_piece=current_status(j).piece;
+                    
+                %for left attack
+                elseif current_status(j).file==current_status(i).file-1 && current_status(j).rank==current_status(i).rank-1
+                    attack_left_color=current_status(j).color;
+                    attack_left_piece=current_status(j).piece;
+                    
+                % for "en-passent" capture
+                elseif strcmp(current_status(j).piece,'pawn') && strcmp(current_status(j).color,'White') && current_status(j).rank==4 && strcmp(previous_status(j).displacement,'No') && current_status(i).rank==4 && (current_status(j).file==current_status(i).file+1 || current_status(j).file==current_status(i).file==-1)
+                    try
+                        legal_moves=[legal_moves;create_legal_move_struct(current_status(j),current_status(j).file,3,'pawn')];
+                    catch
+                        legal_moves=create_legal_move_struct(current_status(j),current_status(j).file,3,'pawn');
+                    end
+                end
+             end           
+   end
 end
 end
