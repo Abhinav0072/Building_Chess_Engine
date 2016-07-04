@@ -172,7 +172,10 @@ for i=1:m,
         try
             legal_moves=[legal_moves;create_legal_move_bishop(Color,current_status(i),first_closest_file,first_closest_rank,first_color,first_piece,second_closest_file,second_closest_rank,second_color,second_piece,third_closest_file,third_closest_rank,third_color,third_piece,fourth_closest_file,fourth_closest_rank,fourth_color,fourth_piece)];
         catch
-             legal_moves=create_legal_move_bishop(Color,current_status(i),first_closest_file,first_closest_rank,first_color,first_piece,second_closest_file,second_closest_rank,second_color,second_piece,third_closest_file,third_closest_rank,third_color,third_piece,fourth_closest_file,fourth_closest_rank,fourth_color,fourth_piece);
+            try
+                legal_moves=create_legal_move_bishop(Color,current_status(i),first_closest_file,first_closest_rank,first_color,first_piece,second_closest_file,second_closest_rank,second_color,second_piece,third_closest_file,third_closest_rank,third_color,third_piece,fourth_closest_file,fourth_closest_rank,fourth_color,fourth_piece);
+            catch
+            end
         end
     end
     
@@ -285,7 +288,10 @@ for i=1:m,
         try
             legal_moves=[legal_moves;create_legal_move_knight(Color,current_status(i),file_up_right_color,file_up_right_piece,file_up_left_color,file_up_left_piece,file_down_right_color,file_down_right_piece,file_down_left_color,file_down_left_piece,rank_left_up_color,rank_left_up_piece,rank_left_down_color,rank_left_down_piece,rank_right_up_color,rank_right_up_piece,rank_right_down_color,rank_right_down_piece)];
         catch
-            legal_moves=create_legal_move_knight(Color,current_status(i),file_up_right_color,file_up_right_piece,file_up_left_color,file_up_left_piece,file_down_right_color,file_down_right_piece,file_down_left_color,file_down_left_piece,rank_left_up_color,rank_left_up_piece,rank_left_down_color,rank_left_down_piece,rank_right_up_color,rank_right_up_piece,rank_right_down_color,rank_right_down_piece);
+            try
+                legal_moves=create_legal_move_knight(Color,current_status(i),file_up_right_color,file_up_right_piece,file_up_left_color,file_up_left_piece,file_down_right_color,file_down_right_piece,file_down_left_color,file_down_left_piece,rank_left_up_color,rank_left_up_piece,rank_left_down_color,rank_left_down_piece,rank_right_up_color,rank_right_up_piece,rank_right_down_color,rank_right_down_piece);
+            catch
+            end
         end
     end
     
@@ -386,7 +392,10 @@ for i=1:m,
         try
             legal_moves=[legal_moves;create_legal_move_king(Color,current_status.(i),up_color,up_piece,down_color,down_piece,left_color,left_piece,right_color,right_piece,dig_1_color,dig_1_piece,dig_2_color,dig_2_piece,dig_3_color,dig_3_piece,dig_4_color,dig_4_piece)];
         catch
-            legal_moves=create_legal_move_king(Color,current_status.(i),up_color,up_piece,down_color,down_piece,left_color,left_piece,right_color,right_piece,dig_1_color,dig_1_piece,dig_2_color,dig_2_piece,dig_3_color,dig_3_piece,dig_4_color,dig_4_piece);
+            try
+                legal_moves=create_legal_move_king(Color,current_status.(i),up_color,up_piece,down_color,down_piece,left_color,left_piece,right_color,right_piece,dig_1_color,dig_1_piece,dig_2_color,dig_2_piece,dig_3_color,dig_3_piece,dig_4_color,dig_4_piece);
+            catch
+            end
         end
     end
     
@@ -496,9 +505,12 @@ for i=1:m,
              end           
    end
    try
-       legal_moves=[legal_moves;];
+       legal_moves=[legal_moves;create_legal_move_pawn(Color,current_status(i),foreward_one_color,foreward_one_piece,foreward_two_color,foreward_two_piece,attack_left_color,attack_left_piece,attack_right_color,attack_right_piece)];
    catch
-       legal_moves=();
+       try
+        legal_moves=create_legal_move_pawn(Color,current_status(i),foreward_one_color,foreward_one_piece,foreward_two_color,foreward_two_piece,attack_left_color,attack_left_piece,attack_right_color,attack_right_piece);
+       catch
+       end
    end
 end
 end
