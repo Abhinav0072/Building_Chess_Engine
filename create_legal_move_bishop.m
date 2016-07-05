@@ -3,10 +3,12 @@ function legal_moves=create_legal_move_bishop(for_which_color,current_state,firs
 %% creating legal moves data struct for the legal moves in  first diagonal (with slope1)
 % generating legal moves from the space between the two ends
 for i=1:(first_closest_file-third_closest_file-1)
-    try
-        legal_moves=[legal_moves;create_legal_move_struct(current_state,third_closest_file+i,third_closest_rank+i,'None')];
-    catch
-        legal_moves=create_legal_move_struct(current_state,third_closest_file+i,third_closest_rank+i,'None');
+    if (third_closest_file+i)~=current_state.file
+        try
+            legal_moves=[legal_moves;create_legal_move_struct(current_state,third_closest_file+i,third_closest_rank+i,'None')];
+        catch
+            legal_moves=create_legal_move_struct(current_state,third_closest_file+i,third_closest_rank+i,'None');
+        end
     end
 end
 % checking the first endpoints for possible capture
@@ -43,10 +45,12 @@ end
 %% creating legal moves data_struct for the legal moves in  second diagonal (with slope -1)
 % generating legal moves from the space between the two ends
 for i=1:(fourth_closest_file-second_closest_file-1)
-    try
-        legal_moves=[legal_moves;create_legal_move_struct(current_state,fourth_closest_file+i,fourth_closest_rank+i,'None')];
-    catch
-        legal_moves=create_legal_move_struct(current_state,fourth_closest_file+i,fourth_closest_rank+i,'None');
+    if (fourth_closest_file-i)~=current_state.file
+        try
+            legal_moves=[legal_moves;create_legal_move_struct(current_state,fourth_closest_file-i,fourth_closest_rank+i,'None')];
+        catch
+            legal_moves=create_legal_move_struct(current_state,fourth_closest_file-i,fourth_closest_rank+i,'None');
+        end
     end
 end
 % checking the first endpoints for possible capture

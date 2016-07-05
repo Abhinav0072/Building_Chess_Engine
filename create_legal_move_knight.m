@@ -6,10 +6,10 @@ if strcmp(file_up_right_color,'None')
     catch
         legal_moves=create_legal_move_struct(current_state,current_state.file+1,current_state.rank+2,'None');
     end
-elseif strcmp(file_up_right_color,for_which_color)==0
+elseif strcmp(file_up_right_color,for_which_color)==0 && strcmp(file_up_right_color,'NA')==0
     try
         legal_moves=[legal_moves;create_legal_move_struct(current_state,current_state.file+1,current_state.rank+2,file_up_right_piece)];
-        catch
+    catch
         legal_moves=create_legal_move_struct(current_state,current_state.file+1,current_state.rank+2,file_up_right_piece);
     end
 end
@@ -21,10 +21,10 @@ if strcmp(file_up_left_color,'None')
     catch
         legal_moves=create_legal_move_struct(current_state,current_state.file-1,current_state.rank+2,'None');
     end
-elseif strcmp(file_up_left_color,for_which_color)==0
+elseif strcmp(file_up_left_color,for_which_color)==0 && strcmp(file_up_left_color,'NA')==0
     try
         legal_moves=[legal_moves;create_legal_move_struct(current_state,current_state.file-1,current_state.rank+2,file_up_left_piece)];
-        catch
+    catch
         legal_moves=create_legal_move_struct(current_state,current_state.file-1,current_state.rank+2,file_up_left_piece);
     end
 end
@@ -36,10 +36,10 @@ if strcmp(file_down_left_color,'None')
     catch
         legal_moves=create_legal_move_struct(current_state,current_state.file-1,current_state.rank-2,'None');
     end
-elseif strcmp(file_down_left_color,for_which_color)==0
+elseif strcmp(file_down_left_color,for_which_color)==0 && strcmp(file_down_left_color,'NA')==0
     try
         legal_moves=[legal_moves;create_legal_move_struct(current_state,current_state.file-1,current_state.rank-2,file_down_left_piece)];
-        catch
+    catch
         legal_moves=create_legal_move_struct(current_state,current_state.file-1,current_state.rank-2,file_down_left_piece);
     end
 end
@@ -50,10 +50,10 @@ if strcmp(file_down_right_color,'None')
     catch
         legal_moves=create_legal_move_struct(current_state,current_state.file+1,current_state.rank-2,'None');
     end
-elseif strcmp(file_down_right_color,for_which_color)==0
+elseif strcmp(file_down_right_color,for_which_color)==0 && strcmp(file_down_right_color,'NA')==0
     try
         legal_moves=[legal_moves;create_legal_move_struct(current_state,current_state.file+1,current_state.rank-2,file_down_right_piece)];
-        catch
+    catch
         legal_moves=create_legal_move_struct(current_state,current_state.file+1,current_state.rank-2,file_down_right_piece);
     end
 end
@@ -64,10 +64,10 @@ if strcmp(rank_right_up_color,'None')
     catch
         legal_moves=create_legal_move_struct(current_state,current_state.file+2,current_state.rank+1,'None');
     end
-elseif strcmp(rank_right_up_color,for_which_color)==0
+elseif strcmp(rank_right_up_color,for_which_color)==0 && strcmp(rank_right_up_color,'NA')==0
     try
         legal_moves=[legal_moves;create_legal_move_struct(current_state,current_state.file+2,current_state.rank+1,rank_right_up_piece)];
-        catch
+    catch
         legal_moves=create_legal_move_struct(current_state,current_state.file+2,current_state.rank+1,rank_right_up_piece);
     end
 end
@@ -78,10 +78,10 @@ if strcmp(rank_right_down_color,'None')
     catch
         legal_moves=create_legal_move_struct(current_state,current_state.file+2,current_state.rank-1,'None');
     end
-elseif strcmp(rank_right_down_color,for_which_color)==0
+elseif strcmp(rank_right_down_color,for_which_color)==0 && strcmp(rank_right_down_color,'NA')==0
     try
         legal_moves=[legal_moves;create_legal_move_struct(current_state,current_state.file+2,current_state.rank-1,rank_right_down_piece)];
-        catch
+    catch
         legal_moves=create_legal_move_struct(current_state,current_state.file+2,current_state.rank-1,rank_right_down_piece);
     end
 end
@@ -92,10 +92,10 @@ if strcmp(rank_left_up_color,'None')
     catch
         legal_moves=create_legal_move_struct(current_state,current_state.file-2,current_state.rank+1,'None');
     end
-elseif strcmp(rank_left_up_color,for_which_color)==0
+elseif strcmp(rank_left_up_color,for_which_color)==0 && strcmp(rank_left_up_color,'NA')==0
     try
         legal_moves=[legal_moves;create_legal_move_struct(current_state,current_state.file-2,current_state.rank+1,rank_left_up_piece)];
-        catch
+    catch
         legal_moves=create_legal_move_struct(current_state,current_state.file-2,current_state.rank+1,rank_left_up_piece);
     end
 end
@@ -106,10 +106,10 @@ if strcmp(rank_left_down_color,'None')
     catch
         legal_moves=create_legal_move_struct(current_state,current_state.file-2,current_state.rank-1,'None');
     end
-elseif strcmp(rank_left_down_color,for_which_color)==0
+elseif strcmp(rank_left_down_color,for_which_color)==0 && strcmp(rank_left_down_color,'NA')==0
     try
         legal_moves=[legal_moves;create_legal_move_struct(current_state,current_state.file-2,current_state.rank-1,rank_left_down_piece)];
-        catch
+    catch
         legal_moves=create_legal_move_struct(current_state,current_state.file-2,current_state.rank-1,rank_left_down_piece);
     end
 end
