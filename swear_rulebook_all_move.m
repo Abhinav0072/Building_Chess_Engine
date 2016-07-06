@@ -1,4 +1,4 @@
-function legal_moves=swear_rulebook_moveS(current_status,previous_status,Color,is_castling_legal)
+function legal_moves=swear_rulebook_all_move(current_status,previous_status,Color,is_castling_legal)
 %%  %This function contain the rules of the legality of the moves.
     %This will give  a list of all
     %possible moves by all possible pieces alives of one or both, according
@@ -475,7 +475,7 @@ for i=1:m,
                     foreward_one_piece=current_status(j).piece;
                     
                 %for two move foreward on the first move of that piece
-                elseif ((current_status(j).file==current_status(i).file) && (current_status(j).rank==current_status(i).rank+2 )) && (strcmp(current_status(.displacement,'No'))
+                elseif ((current_status(j).file==current_status(i).file) && (current_status(j).rank==current_status(i).rank+2 )) && (strcmp(current_status(i).displacement,'No'))
                     foreward_two_color=current_status(j).color;
                     foreward_two_piece=current_status(j).piece;
                     
@@ -508,7 +508,7 @@ for i=1:m,
                     foreward_one_piece=current_status(j).piece;
                     
                 %for two move foreward on the first move of that piece
-                elseif ((current_status(j).file==current_status(i).file )&& (current_status(j).rank==current_status(i).rank-2) )&& (strcmp(current_status.displacement,'No'))
+                elseif ((current_status(j).file==current_status(i).file )&& (current_status(j).rank==current_status(i).rank-2) )&& (strcmp(current_status(i).displacement,'No'))
                     foreward_two_color=current_status(j).color;
                     foreward_two_piece=current_status(j).piece;
                     

@@ -1,11 +1,39 @@
-function [khana_initial,khana_update,pos_check,legal]=take_input(Color,Piece,init_file,init_rank,final_file,final_rank)
+function [khana_index,legal,capturing]=take_input(current_status,previous_status,init_file,init_rank,final_file,final_rank)
 
-%creating khana for the initial state.
-khana_initial=create_khana(Color,Piece,init_file,init_rank);
-pos_check=initial_pos_check(khana_initial,current_status);  % check if the repported initial position match with current state(now previous)
+%% searching for the piece which was in that position in the current_status of game (which had yet to be updated).
+m=length(current_status);
+for i=1:m,
+    if current_status(i).file==init_file && current_status(i).rank==init_rank
+        index=i;
+        break
+    end
+end
+khana_index=index;
+Color=current_status(index).color;
 
-%creating khana for the final state.
-khana_update=create_khana(Color,Piece,final_file,final_rank);
-legal=swear_rulebook_move(khana_update,khana_initial);      % check if the performed move is legal or not.
+%% checking if the move is legal or not
 
+% first get all legal moves from the rulebook for that piece
+legal_moves=swear_rulebook_legality(current_status,previous_status,index,Color);
+[n,~]=size(legal_moves);
+
+% checking if the played move is in the legal moves of that piece
+for i=1:n,
+    if legal_moves(i).final_file==final_file && legal_moves(i).final_rank==final_rank
+        index=i;
+        legal=1;
+        break
+    else
+        legal=0;
+    end
+end
+
+% giving info if this move is capturing something or not
+if strcmp(legal_moves(index).capturing_what,'None')==0
+    capturing=1;
+else
+    capturing=0;
+end
+
+% khana_update=create_khana(Color,Piece,final_file,final_rank,'Alive','Yes');
 end

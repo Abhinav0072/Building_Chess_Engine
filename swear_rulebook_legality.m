@@ -1,4 +1,4 @@
-function legal_moves=swear_rulebook_moveS(current_status,previous_status,Color,is_castling_legal)
+function legal_moves=swear_rulebook_legality(current_status,previous_status,i,Color)
 %%  %This function contain the rules of the legality of the moves.
     %This will give  a list of all
     %possible moves by all possible pieces alives of one or both, according
@@ -11,8 +11,6 @@ function legal_moves=swear_rulebook_moveS(current_status,previous_status,Color,i
 %% Calculating all possible moves for each piece of required color
 % files=['a';'b';'c';'d';'e';'f';'g';'h'];
 [m,~]=size(current_status);
-for i=1:m,
-    
     %% Writing rule for Rook and taking out the possible moves for Rook
     if strcmp(current_status(i).status,'Alive')&&(and(strcmp(current_status(i).color,Color),(strcmp(current_status(i).piece,'Rook') || strcmp(current_status(i).piece,'Queen'))))
       %initializing the default values for free places,assuming the whole
@@ -541,5 +539,5 @@ for i=1:m,
        end
    end
     end
-end
+
 end
