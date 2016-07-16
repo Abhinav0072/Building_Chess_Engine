@@ -8,7 +8,7 @@ for i=1:m,
         break
     end
 end
-khana_index=index;
+khana_index=index;                      % it is the index of current position of that piece in current_status matrix
 Color=current_status(index).color;
 
 %% checking if the move is legal or not

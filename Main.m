@@ -1,7 +1,7 @@
 %% Deploying Game Manager
 %% Checklist (for me)
 
-% give playtime (to be done)
+% give playtime (to be done at game time)
 
 % playtime= and how to implement (to be done)
 

@@ -1,14 +1,9 @@
 function legal_moves=swear_rulebook_legality(current_status,previous_status,i,Color)
 %%  %This function contain the rules of the legality of the moves.
-    %This will give  a list of all
-    %possible moves by all possible pieces alives of one or both, according
-    %to need(for AI vs AI,AI vs Human)
-     
-    %"status matrix" :- will give the current status of board to help decide
-    % which pieces possible moves need to be given out.
+    %This will give  a list of all possible moves for the given piece to search if the specified move is legal or not later.   
     %"Color" :-for what color we need to generate the legal moves.
     
-%% Calculating all possible moves for each piece of required color
+%% Calculating all possible moves for given piece with index(in current_status) specified.
 % files=['a';'b';'c';'d';'e';'f';'g';'h'];
 [m,~]=size(current_status);
     %% Writing rule for Rook and taking out the possible moves for Rook
