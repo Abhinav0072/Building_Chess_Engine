@@ -1,4 +1,4 @@
-function legal_moves=swear_rulebook_all_move(current_status,previous_status,Color,is_castling_legal)
+function legal_moves=swear_rulebook_all_move(current_status,previous_status,Color)
 %%  %This function contain the rules of the legality of the moves.
     %This will give  a list of all
     %possible moves by all possible pieces alives of one or both, according
@@ -123,6 +123,8 @@ for i=1:m,
         % for fourth quadrant(relative to Bishop)
         fourth_closest_file_diff=8-current_status(i).file;
         fourth_closest_rank_diff=current_status(i).rank-1;
+        fourth_color='None';                 %assuming that no piece is there in the last possible khana
+        fourth_piece='None';                 %assuming that no piece is there in the last possible khana
         if fourth_closest_file_diff<fourth_closest_rank_diff
             fourth_closest_file=8;
             fourth_closest_rank=current_status(i).rank-fourth_closest_file_diff;
@@ -137,7 +139,7 @@ for i=1:m,
                rank_diff=current_status(j).rank-current_status(i).rank;
                % checking if the (examining) piece is in the first quadrant
                % digonal.
-               if and(and(file_diff>0,rank_diff>0),(file_diff./rank_diff)==1);
+               if and(and(file_diff>0,rank_diff>0),(file_diff==rank_diff));
                    if current_status(j).file<=first_closest_file
                        first_closest_file=current_status(j).file;
                        first_closest_rank=current_status(j).rank;
@@ -146,7 +148,7 @@ for i=1:m,
                    end
                
                % checking on second quadrant digonal
-               elseif and(and(file_diff<0,rank_diff>0),(file_diff./rank_diff)==-1);
+               elseif and(and(file_diff<0,rank_diff>0),(file_diff==(-1).*rank_diff));
                    if current_status(j).file>=second_closest_file
                        second_closest_file=current_status(j).file;
                        second_closest_rank=current_status(j).rank;
@@ -155,7 +157,7 @@ for i=1:m,
                    end
                    
                % checking on third quadrant digonal
-               elseif and(and(file_diff<0,rank_diff<0),(file_diff./rank_diff)==1);
+               elseif and(and(file_diff<0,rank_diff<0),(file_diff==rank_diff));
                    if current_status(j).file>=third_closest_file
                        third_closest_file=current_status(j).file;
                        third_closest_rank=current_status(j).rank;
@@ -163,7 +165,7 @@ for i=1:m,
                        third_piece=current_status(j).piece;
                    end
                % checking in fourth quadrant digonal    
-               elseif and(and(file_diff>0,rank_diff<0),(file_diff./rank_diff)==-1);
+               elseif and(and(file_diff>0,rank_diff<0),(file_diff==(-1).*rank_diff));
                    if current_status(j).file<=fourth_closest_file
                        fourth_closest_file=current_status(j).file;
                        fourth_closest_rank=current_status(j).rank;
@@ -417,10 +419,10 @@ for i=1:m,
             end
         end
         try
-            legal_moves=[legal_moves;create_legal_move_king(Color,current_status(i),up_color,up_piece,down_color,down_piece,left_color,left_piece,right_color,right_piece,dig_1_color,dig_1_piece,dig_2_color,dig_2_piece,dig_3_color,dig_3_piece,dig_4_color,dig_4_piece)];
+            legal_moves=[legal_moves;create_legal_move_king(Color,current_status(i),up_color,up_piece,down_color,down_piece,left_color,left_piece,right_color,right_piece,dig_1_color,dig_1_piece,dig_2_color,dig_2_piece,dig_3_color,dig_3_piece,dig_4_color,dig_4_piece,'NA','NA')];
         catch
             try
-                legal_moves=create_legal_move_king(Color,current_status(i),up_color,up_piece,down_color,down_piece,left_color,left_piece,right_color,right_piece,dig_1_color,dig_1_piece,dig_2_color,dig_2_piece,dig_3_color,dig_3_piece,dig_4_color,dig_4_piece);
+                legal_moves=create_legal_move_king(Color,current_status(i),up_color,up_piece,down_color,down_piece,left_color,left_piece,right_color,right_piece,dig_1_color,dig_1_piece,dig_2_color,dig_2_piece,dig_3_color,dig_3_piece,dig_4_color,dig_4_piece,'NA','NA');
             catch
                 % flag=1;
             end
@@ -531,15 +533,80 @@ for i=1:m,
                     end
                 end
              end           
-   end
-   try
-       legal_moves=[legal_moves;create_legal_move_pawn(Color,current_status(i),foreward_one_color,foreward_one_piece,foreward_two_color,foreward_two_piece,attack_left_color,attack_left_piece,attack_right_color,attack_right_piece)];
-   catch
-       try
-        legal_moves=create_legal_move_pawn(Color,current_status(i),foreward_one_color,foreward_one_piece,foreward_two_color,foreward_two_piece,attack_left_color,attack_left_piece,attack_right_color,attack_right_piece);
-       catch
-       end
-   end
+        end
+        try
+            legal_moves=[legal_moves;create_legal_move_pawn(Color,current_status(i),foreward_one_color,foreward_one_piece,foreward_two_color,foreward_two_piece,attack_left_color,attack_left_piece,attack_right_color,attack_right_piece)];
+        catch
+            try
+                legal_moves=create_legal_move_pawn(Color,current_status(i),foreward_one_color,foreward_one_piece,foreward_two_color,foreward_two_piece,attack_left_color,attack_left_piece,attack_right_color,attack_right_piece);
+            catch
+            end
+        end
+    end
+   
+    %% Generating legal move if "Castling" is possible
+    if strcmp(current_status(i).status,'Alive')&&(and(strcmp(current_status(i).color,Color),strcmp(current_status(i).piece,'King')))
+        % Implementing it for White King
+        if strcmp(current_status(i).color,'White')&&strcmp(current_status(i).displacement,'No')
+            queen_side_castling='NA';           % assuming the move is not possible and updating accordingly
+            king_side_castling='NA';            % assuming the move is not possible and updating accordingly
+            
+            % Checking on Queen side
+            if strcmp(current_status(1).status,'Alive') && strcmp(current_status(1).displacement,'No')
+                queen_side_castling='None';      % assuming that move is possible and will check later fro all piece if they are blocking to turn it off
+            end
+            if strcmp(current_status(8).status,'Alive') && strcmp(current_status(8).displacement,'No')
+                king_side_castling='None';      % assuming that move is possible and will check later fro all piece if they are blocking to turn it off
+            end
+            
+            %now checking through the pieces if they are blocking this move
+            for j=1:m,
+                if j~=1 && j~=5 && j~=8         % leaving the rook and king (white) at their fixed position
+                    %for queen side castling 
+                    if current_status(j).file==1 && current_status(j).rank<5
+                        queen_side_castling='NA';   %switching off the legality flag as there is a piece blocking its way to castle
+                    %for king side castling
+                    elseif current_status(j).file==1 && current_status(j).rank>5
+                        king_side_castling='NA';    %switching off the legality flag as there is a piece blocking its way to castle
+                    end
+                end
+            end 
+        end
+        
+        % Implementing it for Black King
+        if strcmp(current_status(i).color,'Black')&&strcmp(current_status(i).displacement,'No')
+            queen_side_castling='NA';           % assuming the move is not possible and updating accordingly
+            king_side_castling='NA';            % assuming the move is not possible and updating accordingly
+            
+            % Checking on Queen side
+            if strcmp(current_status(17).status,'Alive') && strcmp(current_status(17).displacement,'No')
+                queen_side_castling='None';      % assuming that move is possible and will check later fro all piece if they are blocking to turn it off
+            end
+            if strcmp(current_status(24).status,'Alive') && strcmp(current_status(24).displacement,'No')
+                king_side_castling='None';      % assuming that move is possible and will check later fro all piece if they are blocking to turn it off
+            end
+            
+            %now checking through the pieces if they are blocking this move
+            for j=1:m,
+                if j~=17 && j~=21 && j~=24         % leaving the rook and king (white) at their fixed position
+                    %for queen side castling 
+                    if current_status(j).file==8 && current_status(j).rank<5
+                        queen_side_castling='NA';   %switching off the legality flag as there is a piece blocking its way to castle
+                    %for king side castling
+                    elseif current_status(j).file==8 && current_status(j).rank>5
+                        king_side_castling='NA';    %switching off the legality flag as there is a piece blocking its way to castle
+                    end
+                end
+            end
+        end
+        try
+            legal_moves=[legal_moves;create_legal_move_king(Color,current_status(i),'NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA',queen_side_castling,king_side_castling)];
+        catch
+            try
+                legal_moves=create_legal_move_king(Color,current_status(i),'NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA',queen_side_castling,king_side_castling);
+            catch
+            end
+        end        
     end
 end
 end

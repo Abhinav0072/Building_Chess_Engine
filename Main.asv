@@ -31,7 +31,7 @@ control_color='White';
 while (playtime_black>0 || playtime_white>0)
     %% heve to keep the clock counting down simultaneously (I have no idea how to do it now)
     
-    %% will take input from Ebin's Code(opponent move) or AI Engine (common input method for both)
+    %% will take input from Ebin's Code or AI Engine (common for both)
      % arguments required  are initial file,initial rank,final file ,final
      % rank,castling,castling_side,promotion,promotion_preference
      % on castling the final and initial will be given of king

@@ -12,13 +12,13 @@ for i=1:(first_closest_file-third_closest_file-1)
     end
 end
 % checking the first endpoints for possible capture
-if strcmp(third_color,'None')
+if strcmp(third_color,'None') && third_closest_file~=current_state.file
     try
         legal_moves=[legal_moves;create_legal_move_struct(current_state,third_closest_file,third_closest_rank,'None')];
     catch
         legal_moves=create_legal_move_struct(current_state,third_closest_file,third_closest_rank,'None');
     end
-elseif strcmp(third_color,for_which_color)==0
+elseif strcmp(third_color,for_which_color)==0 && third_closest_file~=current_state.file
     try
         legal_moves=[legal_moves;create_legal_move_struct(current_state,third_closest_file,third_closest_rank,third_piece)];
     catch
@@ -27,13 +27,13 @@ elseif strcmp(third_color,for_which_color)==0
 end
 
 % checking the second endpoints for possible capture
-if strcmp(first_color,'None')
+if strcmp(first_color,'None') && first_closest_file~=current_state.file
     try
         legal_moves=[legal_moves;create_legal_move_struct(current_state,first_closest_file,first_closest_rank,'None')];
     catch
         legal_moves=create_legal_move_struct(current_state,first_closest_file,first_closest_rank,'None');
     end
-elseif strcmp(third_color,for_which_color)==0
+elseif strcmp(first_color,for_which_color)==0 && first_closest_file~=current_state.file
     try
         legal_moves=[legal_moves;create_legal_move_struct(current_state,first_closest_file,first_closest_rank,first_piece)];
     catch
@@ -54,13 +54,13 @@ for i=1:(fourth_closest_file-second_closest_file-1)
     end
 end
 % checking the first endpoints for possible capture
-if strcmp(fourth_color,'None')
+if strcmp(fourth_color,'None') && fourth_closest_file~=current_state.file
     try
         legal_moves=[legal_moves;create_legal_move_struct(current_state,fourth_closest_file,fourth_closest_rank,'None')];
     catch
         legal_moves=create_legal_move_struct(current_state,fourth_closest_file,fourth_closest_rank,'None');
     end
-elseif strcmp(fourth_color,for_which_color)==0
+elseif strcmp(fourth_color,for_which_color)==0 && fourth_closest_file~=current_state.file
     try
         legal_moves=[legal_moves;create_legal_move_struct(current_state,fourth_closest_file,fourth_closest_rank,fourth_piece)];
     catch
@@ -69,13 +69,13 @@ elseif strcmp(fourth_color,for_which_color)==0
 end
 
 % checking the second endpoints for possible capture
-if strcmp(second_color,'None')
+if strcmp(second_color,'None') && second_closest_file~=current_state.file
     try
         legal_moves=[legal_moves;create_legal_move_struct(current_state,second_closest_file,second_closest_rank,'None')];
     catch
         legal_moves=create_legal_move_struct(current_state,second_closest_file,second_closest_rank,'None');
     end
-elseif strcmp(second_color,for_which_color)==0
+elseif strcmp(second_color,for_which_color)==0 && second_closest_file~=current_state.file
     try
         legal_moves=[legal_moves;create_legal_move_struct(current_state,second_closest_file,second_closest_rank,second_piece)];
     catch

@@ -1,11 +1,18 @@
-function legal_moves=swear_rulebook_legality(current_status,previous_status,i,Color)
+function legal_moves=swear_rulebook_all_move(current_status,previous_status,Color,is_castling_legal)
 %%  %This function contain the rules of the legality of the moves.
-    %This will give  a list of all possible moves for the given piece to search if the specified move is legal or not later.   
+    %This will give  a list of all
+    %possible moves by all possible pieces alives of one or both, according
+    %to need(for AI vs AI,AI vs Human)
+     
+    %"status matrix" :- will give the current status of board to help decide
+    % which pieces possible moves need to be given out.
     %"Color" :-for what color we need to generate the legal moves.
     
-%% Calculating all possible moves for given piece with index(in current_status) specified.
+%% Calculating all possible moves for each piece of required color
 % files=['a';'b';'c';'d';'e';'f';'g';'h'];
 [m,~]=size(current_status);
+for i=1:m,
+    
     %% Writing rule for Rook and taking out the possible moves for Rook
     if strcmp(current_status(i).status,'Alive')&&(and(strcmp(current_status(i).color,Color),(strcmp(current_status(i).piece,'Rook') || strcmp(current_status(i).piece,'Queen'))))
       %initializing the default values for free places,assuming the whole
@@ -116,8 +123,6 @@ function legal_moves=swear_rulebook_legality(current_status,previous_status,i,Co
         % for fourth quadrant(relative to Bishop)
         fourth_closest_file_diff=8-current_status(i).file;
         fourth_closest_rank_diff=current_status(i).rank-1;
-        fourth_color='None';                 %assuming that no piece is there in the last possible khana
-        fourth_piece='None';                 %assuming that no piece is there in the last possible khana
         if fourth_closest_file_diff<fourth_closest_rank_diff
             fourth_closest_file=8;
             fourth_closest_rank=current_status(i).rank-fourth_closest_file_diff;
@@ -412,10 +417,10 @@ function legal_moves=swear_rulebook_legality(current_status,previous_status,i,Co
             end
         end
         try
-            legal_moves=[legal_moves;create_legal_move_king(Color,current_status(i),up_color,up_piece,down_color,down_piece,left_color,left_piece,right_color,right_piece,dig_1_color,dig_1_piece,dig_2_color,dig_2_piece,dig_3_color,dig_3_piece,dig_4_color,dig_4_piece,'NA','NA')];
+            legal_moves=[legal_moves;create_legal_move_king(Color,current_status(i),up_color,up_piece,down_color,down_piece,left_color,left_piece,right_color,right_piece,dig_1_color,dig_1_piece,dig_2_color,dig_2_piece,dig_3_color,dig_3_piece,dig_4_color,dig_4_piece)];
         catch
             try
-                legal_moves=create_legal_move_king(Color,current_status(i),up_color,up_piece,down_color,down_piece,left_color,left_piece,right_color,right_piece,dig_1_color,dig_1_piece,dig_2_color,dig_2_piece,dig_3_color,dig_3_piece,dig_4_color,dig_4_piece,'NA','NA');
+                legal_moves=create_legal_move_king(Color,current_status(i),up_color,up_piece,down_color,down_piece,left_color,left_piece,right_color,right_piece,dig_1_color,dig_1_piece,dig_2_color,dig_2_piece,dig_3_color,dig_3_piece,dig_4_color,dig_4_piece);
             catch
                 % flag=1;
             end
@@ -526,17 +531,17 @@ function legal_moves=swear_rulebook_legality(current_status,previous_status,i,Co
                     end
                 end
              end           
-   end
-   try
-       legal_moves=[legal_moves;create_legal_move_pawn(Color,current_status(i),foreward_one_color,foreward_one_piece,foreward_two_color,foreward_two_piece,attack_left_color,attack_left_piece,attack_right_color,attack_right_piece)];
-   catch
-       try
-        legal_moves=create_legal_move_pawn(Color,current_status(i),foreward_one_color,foreward_one_piece,foreward_two_color,foreward_two_piece,attack_left_color,attack_left_piece,attack_right_color,attack_right_piece);
-       catch
-       end
-   end
+        end
+        try
+            legal_moves=[legal_moves;create_legal_move_pawn(Color,current_status(i),foreward_one_color,foreward_one_piece,foreward_two_color,foreward_two_piece,attack_left_color,attack_left_piece,attack_right_color,attack_right_piece)];
+        catch
+            try
+                legal_moves=create_legal_move_pawn(Color,current_status(i),foreward_one_color,foreward_one_piece,foreward_two_color,foreward_two_piece,attack_left_color,attack_left_piece,attack_right_color,attack_right_piece);
+            catch
+            end
+        end
     end
-    
+   
     %% Generating legal move if "Castling" is possible
     if strcmp(current_status(i).status,'Alive')&&(and(strcmp(current_status(i).color,Color),strcmp(current_status(i).piece,'King')))
         % Implementing it for White King
@@ -593,13 +598,13 @@ function legal_moves=swear_rulebook_legality(current_status,previous_status,i,Co
             end
         end
         try
-            legal_moves=[legal_moves;create_legal_move_king(Color,current_status(i),'NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA',queen_side_castling,king_side_castling)];
+            legal_moves=[legal_moves;create_legal_move
         catch
             try
-                legal_moves=create_legal_move_king(Color,current_status(i),'NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA','NA',queen_side_castling,king_side_castling);
             catch
             end
-        end        
+        end
+        
     end
-
+end
 end
