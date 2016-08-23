@@ -1,4 +1,4 @@
-function [check,checkmate,draw]=analyze_game_check(for_which_color,current_status,previous_status,super_previous_status)
+function [check,checkmate,draw]=analyze_game_check(for_which_color,current_status,previous_status_temp,super_previous_status)
 %% Determine if the king is in check
 % for which color is the color of one jisko check karna hai ki samne wala
 % mereko check de raha hai ki nahi
@@ -11,7 +11,7 @@ elseif strcmp(for_which_color,'Black')
     %khana_index=21;
     Color='White';
 end
-legal_moves=swear_rulebook_all_move(current_status,previous_status,Color);
+legal_moves=swear_rulebook_all_move(current_status_temp,previous_status_temp,Color);
 [n,~]=size(legal_moves);
 for i=1:n
     if strcmp(legal_moves(i).capturing_what,'King')
@@ -26,7 +26,7 @@ end
 checkmate=0;
 if check==1
     checkmate=1;  % assuming it is check mate and switching it off when we get a legal move which remove king from check
-    legal_move_apna=swear_rulebook_all_move(current_status,previous_status,for_which_color);
+    legal_move_apna=swear_rulebook_all_move(current_status_temp,previous_status_temp,for_which_color);
     [n,~]=size(legal_move_apna);
     for i=1:n,
         if strcmp(legal_move_apna(i).current_status.piece,'King')

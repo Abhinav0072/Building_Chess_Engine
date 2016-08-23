@@ -131,18 +131,18 @@ end
 % when castling is queen side
 if strcmp(queen_side_castling,'None')
     try
-        legal_moves=[legal_moves;create_legal_move_struct(current_state,current_state.file-2,current_state.rank,'Castling')];
+        legal_moves=[legal_moves;create_legal_move_struct(current_state,current_state.file-2,current_state.rank,'Queen_Castling')];
     catch
-        legal_moves=create_legal_move_struct(current_state,current_state.file-2,current_state.rank,'Castling');
+        legal_moves=create_legal_move_struct(current_state,current_state.file-2,current_state.rank,'Queen_Castling');
     end
 end
 
 % when castling is king side
 if strcmp(king_side_castling,'None')
     try
-        legal_moves=[legal_moves;create_legal_move_struct(current_state,current_state.file+2,current_state.rank,'Castling')];
+        legal_moves=[legal_moves;create_legal_move_struct(current_state,current_state.file+2,current_state.rank,'King_Castling')];
     catch
-        legal_moves=create_legal_move_struct(current_state,current_state.file+2,current_state.rank,'Castling');
+        legal_moves=create_legal_move_struct(current_state,current_state.file+2,current_state.rank,'King_Castling');
     end
 end
 

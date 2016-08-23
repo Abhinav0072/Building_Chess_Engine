@@ -22,8 +22,8 @@ init_state=init_board(playtime);        % Initializing the chess board for first
 current_status=init_state;              % Initializing the initial status as current status and previous status for first time.
 previous_status=init_state;
 super_previous_status=init_state;
-AI_color='Black';                       % assigning the roles to the player (could be anything)
-player_color='White';                   % assigning roles.
+AI_color='White';                       % assigning the roles to the player (could be anything)
+player_color='Black';                   % assigning roles.
 
 % IDEA:(we could run the loop each time we get input either from camera or AI engine and keep running the clock simultaneously)
 control_flag=1;
@@ -35,16 +35,16 @@ while (playtime_black>0 || playtime_white>0)
      % arguments required  are initial file,initial rank,final file ,final
      % rank,castling,castling_side,promotion,promotion_preference
      % on castling the final and initial will be given of king
-     % on castling the initial position will be given of pawn and final
+     % on promotion the initial position will be given of pawn and final
      % position and preference piece by the player
          
     %% Taking input and checking legality and then updating status (keeping track)
-    [khana_index,legal,capturing,promotion_piece_index]=take_input(current_status,previous_status,init_file,init_rank,final_file,final_rank,promotion,promotion_preference);
+    [khana_index,legal,capturing,promotion_piece_index,castling,castling_side]=take_input(current_status,previous_status,init_file,init_rank,final_file,final_rank,promotion,promotion_preference);
     % updating the match record.
     [current_status,previous_status,super_previous_status]=update_status(current_status,khana_index,legal,capturing,final_file,final_rank,castling,castling_side,promotion,promotion_piece_index);
     
     %% Determining if the king is check or mate or the game is draw
-    
+    [check,checkmate,draw]=analyze_game_check(control_color,current_status,previous_status,super_previous_status);
     
     %% Change of control to other player (mainly to be used to control time)
     if control_flag==1
