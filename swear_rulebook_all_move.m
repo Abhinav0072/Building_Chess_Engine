@@ -468,7 +468,7 @@ for i=1:m,
     end
     
     %now checking through the alive pieces
-   for j=1:m,
+        for j=1:m,
             % implementing it for "white pawn".
             if and(and((j~=i),strcmp(current_status(j).status,'Alive')),strcmp(current_status(i).color,'White'))
                 %for the one move foreward
@@ -543,6 +543,7 @@ for i=1:m,
             end
         end
     end
+
    
     %% Generating legal move if "Castling" is possible
     if strcmp(current_status(i).status,'Alive')&&(and(strcmp(current_status(i).color,Color),strcmp(current_status(i).piece,'King')))
